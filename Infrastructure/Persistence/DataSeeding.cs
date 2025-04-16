@@ -17,7 +17,7 @@ namespace Persistence
         {
             try
             {
-                if (_dbContext.Database.GetAppliedMigrations().Any())
+                if (_dbContext.Database.GetPendingMigrations().Any())
                 {
                     _dbContext.Database.Migrate();
                 }
