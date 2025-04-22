@@ -24,6 +24,16 @@ namespace Persistence
                 Query = Query.Where(specification.Criteria);//_dbContect.Products.Where(P=>P.id == id)
             }
 
+            if (specification.OrderBy is not null)
+            {
+                Query = Query.OrderBy(specification.OrderBy);
+            }
+
+            if (specification.OrderByDescending is not null)
+            {
+                Query = Query.OrderByDescending(specification.OrderByDescending);
+            }
+
             if (specification.IncludeExpressions is not null && specification.IncludeExpressions.Count > 0 )
             {
                 Query = specification.IncludeExpressions.Aggregate(Query, (CurrentQuery, IncludeExp) => CurrentQuery.Include(IncludeExp)); //        //_dbContect.Products.Where(P=<P.id == id).Include(P=>P.ProductBrand).Include(P=>P.ProductType)
