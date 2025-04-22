@@ -13,7 +13,8 @@ namespace Service.Specifications
         //Get All Products With type And Brand
         public ProductWithBrandAndTypeSpecifications(ProductQueryParams queryParams) :
             base(P=>(!queryParams.BrandId.HasValue || P.BrandId == queryParams.BrandId) 
-                    && (!queryParams.TypeId.HasValue || P.TypeId == queryParams.TypeId))
+                    && (!queryParams.TypeId.HasValue || P.TypeId == queryParams.TypeId)
+                    && (string.IsNullOrEmpty(queryParams.SearchValue) || P.Name.ToLower().Contains(queryParams.SearchValue.ToLower())))
         {
             AddInclude(P => P.ProductBrand);
             AddInclude(P => P.ProductType);
@@ -37,6 +38,8 @@ namespace Service.Specifications
             }
         }
 
+
+        //Get All Products With id
         public ProductWithBrandAndTypeSpecifications(int id):base(P=>P.Id == id)
         {
             AddInclude(P => P.ProductBrand);
