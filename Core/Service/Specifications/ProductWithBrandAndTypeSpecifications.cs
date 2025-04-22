@@ -11,10 +11,10 @@ namespace Service.Specifications
     internal class ProductWithBrandAndTypeSpecifications : BaseSpecifications<Product, int>
     {
         //Get All Products With type And Brand
-        public ProductWithBrandAndTypeSpecifications(ProductQueryParams queryParams) :
-            base(P=>(!queryParams.BrandId.HasValue || P.BrandId == queryParams.BrandId) 
-                    && (!queryParams.TypeId.HasValue || P.TypeId == queryParams.TypeId)
-                    && (string.IsNullOrEmpty(queryParams.SearchValue) || P.Name.ToLower().Contains(queryParams.SearchValue.ToLower())))
+        public ProductWithBrandAndTypeSpecifications(ProductQueryParams queryParams) 
+            :base(P => (!queryParams.BrandId.HasValue || P.BrandId == queryParams.BrandId)
+            && (!queryParams.TypeId.HasValue || P.TypeId == queryParams.TypeId)
+            && (string.IsNullOrEmpty(queryParams.SearchValue) || P.Name.ToLower().Contains(queryParams.SearchValue.ToLower())))
         {
             AddInclude(P => P.ProductBrand);
             AddInclude(P => P.ProductType);
@@ -22,7 +22,7 @@ namespace Service.Specifications
             switch (queryParams.sortingOptions)
             {
                 case ProductSortingOptions.NameAsc:
-                    AddOrderBy(P=>P.Name);
+                    AddOrderBy(P => P.Name);
                     break;
                 case ProductSortingOptions.NameDesc:
                     AddOrderByDescending(P => P.Name);
@@ -36,11 +36,13 @@ namespace Service.Specifications
                 default:
                     break;
             }
+
+            ApplyPagination(queryParams.PageSize, queryParams.PageIndex);
         }
 
 
         //Get All Products With id
-        public ProductWithBrandAndTypeSpecifications(int id):base(P=>P.Id == id)
+        public ProductWithBrandAndTypeSpecifications(int id) : base(P => P.Id == id)
         {
             AddInclude(P => P.ProductBrand);
             AddInclude(P => P.ProductType);
