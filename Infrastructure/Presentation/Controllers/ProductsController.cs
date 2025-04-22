@@ -18,7 +18,7 @@ namespace Presentation.Controllers
         //GET baseUrl/api/Products
         //ProductQueryParams that class have ll paermter we send to End point GetAllProducts here it is complex object so we must use [fromQuery] becouse [HTTPGET] desnot have body
         [HttpGet]  
-        public async Task<ActionResult<IEnumerable<ProductDTo>>> GetAllProducts([FromQuery]ProductQueryParams queryParams)
+        public async Task<ActionResult<PaginationResult<ProductDTo>>> GetAllProducts([FromQuery]ProductQueryParams queryParams)
         {
             var Products = await _serviceManager.ProductService.GetAllProductAsync(queryParams);
             return Ok(Products);

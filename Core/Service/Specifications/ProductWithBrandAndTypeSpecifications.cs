@@ -11,8 +11,8 @@ namespace Service.Specifications
     internal class ProductWithBrandAndTypeSpecifications : BaseSpecifications<Product, int>
     {
         //Get All Products With type And Brand
-        public ProductWithBrandAndTypeSpecifications(ProductQueryParams queryParams) 
-            :base(P => (!queryParams.BrandId.HasValue || P.BrandId == queryParams.BrandId)
+        public ProductWithBrandAndTypeSpecifications(ProductQueryParams queryParams)
+            : base(P => (!queryParams.BrandId.HasValue || P.BrandId == queryParams.BrandId)
             && (!queryParams.TypeId.HasValue || P.TypeId == queryParams.TypeId)
             && (string.IsNullOrEmpty(queryParams.SearchValue) || P.Name.ToLower().Contains(queryParams.SearchValue.ToLower())))
         {

@@ -37,7 +37,7 @@ namespace Service.Specifications
         #endregion
 
 
-        #region 
+        #region Pagination
         public int Take {  get; private set; }
 
         public int Skip { get; private set; }
