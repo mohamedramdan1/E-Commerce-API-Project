@@ -26,7 +26,7 @@ namespace Persistence.Repositories
 
         #region With Specifications
         public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecification<TEntity, Tkey> specifications)
-        {
+            {
             return await SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specifications).ToListAsync();
         }
 

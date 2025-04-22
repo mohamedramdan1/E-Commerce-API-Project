@@ -14,17 +14,17 @@ namespace Persistence
     static class SpecificationEvaluator
     {
         // Create Query
-        //_dbContect.Products.Where(P=<P.id == id).Include(P=>P.ProductBrand).Include(P=>P.ProductType)
+        //_dbContect.Products.Where(P=<=>P.id == id).Include(P=>P.ProductBrand).Include(P=>P.ProductType)
         public static IQueryable<TEntity> CreateQuery<TEntity , Tkey>(IQueryable<TEntity> InputQuery , ISpecification<TEntity, Tkey> specification) where TEntity : BaseEntity<Tkey>
         {
             var Query = InputQuery; //_dbContect.Products
 
-            if (specification is not null)
+            if (specification.Criteria is not null)
             {
-                Query = Query.Where(specification.Criteria);//_dbContect.Products.Where(P=<P.id == id)
+                Query = Query.Where(specification.Criteria);//_dbContect.Products.Where(P=>P.id == id)
             }
 
-            if (specification is not null && specification.IncludeExpressions.Count > 0 )
+            if (specification.IncludeExpressions is not null && specification.IncludeExpressions.Count > 0 )
             {
                 Query = specification.IncludeExpressions.Aggregate(Query, (CurrentQuery, IncludeExp) => CurrentQuery.Include(IncludeExp)); //        //_dbContect.Products.Where(P=<P.id == id).Include(P=>P.ProductBrand).Include(P=>P.ProductType)
 
