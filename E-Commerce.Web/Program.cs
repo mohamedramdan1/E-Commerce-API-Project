@@ -1,5 +1,6 @@
 
 using DomainLayer.Contracts;
+using E_Commerce.Web.CustomMiddleWares;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Persistence;
@@ -40,6 +41,9 @@ namespace E_Commerce.Web
             #endregion
 
             #region Configure the HTTP request pipeline
+
+            app.UseMiddleware<CustomExceptionHandlerMiddleWare>();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
