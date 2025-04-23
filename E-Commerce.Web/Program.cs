@@ -32,7 +32,7 @@ namespace E_Commerce.Web
             #endregion
 
             var app = builder.Build();
-
+             
             #region DataSeeding
             using var Scoope = app.Services.CreateScope();
             var ObjectOfDataSeeding = Scoope.ServiceProvider.GetRequiredService<IDataSeeding>();
