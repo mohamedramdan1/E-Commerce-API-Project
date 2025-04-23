@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAbstraction;
+using Shared;
 using Shared.DataTransferObjects;
 
 namespace Presentation.Controllers
@@ -15,10 +16,11 @@ namespace Presentation.Controllers
     {
         //Get All products
         //GET baseUrl/api/Products
+        //ProductQueryParams that class have ll paermter we send to End point GetAllProducts here it is complex object so we must use [fromQuery] becouse [HTTPGET] desnot have body
         [HttpGet]  
-        public async Task<ActionResult<IEnumerable<ProductDTo>>> GetAllProducts()
+        public async Task<ActionResult<PaginationResult<ProductDTo>>> GetAllProducts([FromQuery]ProductQueryParams queryParams)
         {
-            var Products = await _serviceManager.ProductService.GetAllProductAsync();
+            var Products = await _serviceManager.ProductService.GetAllProductAsync(queryParams);
             return Ok(Products);
         }
 
