@@ -1,6 +1,8 @@
 
 using DomainLayer.Contracts;
 using E_Commerce.Web.CustomMiddleWares;
+using E_Commerce.Web.Factories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Persistence;
@@ -8,6 +10,7 @@ using Persistence.Data;
 using Persistence.Repositories;
 using Service;
 using ServiceAbstraction;
+using Shared.ErrorModels;
 
 namespace E_Commerce.Web
 {
@@ -30,14 +33,19 @@ namespace E_Commerce.Web
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(typeof(Service.AssemblyRefrence).Assembly);
             builder.Services.AddScoped<IServiceManager, ServiceManager>();
+
+            builder.Services.Configure<ApiBehaviorOptions>((Options =>
+            {
+                Options.InvalidModelStateResponseFactory = ApiResponseFactories.GenerateApiValoidationErrorResponse;
+            }));
             #endregion
 
             var app = builder.Build();
-             
+
             #region DataSeeding
             using var Scoope = app.Services.CreateScope();
             var ObjectOfDataSeeding = Scoope.ServiceProvider.GetRequiredService<IDataSeeding>();
-            await ObjectOfDataSeeding.DataSeedAsync(); 
+            await ObjectOfDataSeeding.DataSeedAsync();
             #endregion
 
             #region Configure the HTTP request pipeline
@@ -56,10 +64,10 @@ namespace E_Commerce.Web
             app.UseAuthorization();
 
 
-            app.MapControllers(); 
+            app.MapControllers();
             #endregion
-
+            
             app.Run();
         }
-    } 
-} 
+    }
+}
