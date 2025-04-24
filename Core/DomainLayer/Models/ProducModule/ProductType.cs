@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DomainLayer.Models
+namespace DomainLayer.Models.ProducModule
 {
-    public class ProductBrand : BaseEntity<int>
+    public class ProductType : BaseEntity<int>
     {
         public string Name { get; set; } = default!;
+
     }
 }
