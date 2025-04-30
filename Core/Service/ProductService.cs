@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using DomainLayer.Contracts;
-using DomainLayer.Models;
+using DomainLayer.Exceptions;
+using DomainLayer.Models.ProducModule;
 using Service.Specifications;
 using ServiceAbstraction;
 using Shared;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.ProductModuleDTos;
 
 namespace Service
 {
@@ -46,6 +47,10 @@ namespace Service
         {
             var Specifications = new ProductWithBrandAndTypeSpecifications(Id);
             var Product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(Specifications);
+            if (Product is null)
+            {
+                throw new ProductNotFoundException(Id);//404 Not found
+            }
             return _mapper.Map<Product, ProductDTo>(Product);
         }
     }

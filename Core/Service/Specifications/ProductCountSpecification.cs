@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DomainLayer.Models;
+using DomainLayer.Models.ProducModule;
 using Shared;
 
 namespace Service.Specifications
