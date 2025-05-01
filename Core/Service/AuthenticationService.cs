@@ -45,7 +45,7 @@ namespace Service
                 DisplayName = registerDTo.DisplayName,
                 Email = registerDTo.Email,
                 PhoneNumber = registerDTo.PhoneNumber,
-                UserName = registerDTo.DisplayName
+                UserName = registerDTo.UserName
             };
 
             // Create User [Application User]

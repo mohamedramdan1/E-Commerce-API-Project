@@ -9,9 +9,7 @@ using Shared.DataTransferObjects.BsketModuleDTos;
 
 namespace Presentation.Controllers
 {
-    [ApiController]
-    [Route("api/[Controller]")]
-    public class BasketController(IServiceManager _serviceManager) : ControllerBase
+    public class BasketController(IServiceManager _serviceManager) : ApiBaseController
     {
         // Get Basket
         [HttpGet]
