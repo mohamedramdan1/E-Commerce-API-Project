@@ -129,7 +129,7 @@ namespace Service
             if (User.Address is not null)
                 return _mapper.Map<Address , AddressDTo>(User.Address);
             else
-                throw new AddressNotFoundException(Email);
+                throw new AddressNotFoundException(User.UserName);
 
         }
 
