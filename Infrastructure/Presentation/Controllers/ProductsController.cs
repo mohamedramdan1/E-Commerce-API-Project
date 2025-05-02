@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAbstraction;
 using Shared;
@@ -10,10 +11,10 @@ using Shared.DataTransferObjects.ProductModuleDTos;
 
 namespace Presentation.Controllers
 {
-    [ApiController]
-    [Route("api/[Controller]")] //baseUrl/api/Products
-    public class ProductsController(IServiceManager _serviceManager) : ControllerBase
+
+    public class ProductsController(IServiceManager _serviceManager) : ApiBaseController
     {
+        [Authorize(Roles ="Admin")]
         //Get All products
         //GET baseUrl/api/Products
         //ProductQueryParams that class have ll paermter we send to End point GetAllProducts here it is complex object so we must use [fromQuery] becouse [HTTPGET] desnot have body

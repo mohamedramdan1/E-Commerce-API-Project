@@ -33,17 +33,8 @@ namespace E_Commerce.Web.CustomMiddleWares
 
         private static async Task HandleExceptionAsync(HttpContext httpContext, Exception ex)
         {
-            // Set Status Code For Response
-            httpContext.Response.StatusCode = ex switch
-            {
-                NotFoundException => StatusCodes.Status404NotFound,
-                _ => StatusCodes.Status500InternalServerError,
-            };
-
-
-
             // Set Content Type For Response
-            httpContext.Response.ContentType = "application/json";
+            httpContext.Response.ContentType = "application/json"; // We Can not Use It If We Use WriteAsJsonAsync While Return Object As Json
 
 
             // Response Object
@@ -54,9 +45,26 @@ namespace E_Commerce.Web.CustomMiddleWares
             };
 
 
+            // Set Status Code For Response
+            Response.StatusCode = ex switch
+            {
+                NotFoundException => StatusCodes.Status404NotFound,
+                UnauthorizedException => StatusCodes.Status401Unauthorized,
+                BadRequestException badRequestException => GetBadRequestException(badRequestException, Response),
+                _ => StatusCodes.Status500InternalServerError,
+            };
+
+
 
             // Return Object As JSON
             await httpContext.Response.WriteAsJsonAsync(Response);
+        }
+
+        private static int GetBadRequestException(BadRequestException badRequestException, ErrorToReturn response)
+        {
+            response.Errors = badRequestException.Errors;
+            return StatusCodes.Status400BadRequest;
+
         }
 
         private static async Task HandleNotFoundEndPointAsync(HttpContext httpContext)
