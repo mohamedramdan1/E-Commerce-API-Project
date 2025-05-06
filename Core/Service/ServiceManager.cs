@@ -12,15 +12,21 @@ using ServiceAbstraction;
 
 namespace Service
 {
-    public class ServiceManager(IUnitOfWork unitOfWork, IMapper mapper, IBasketRepository basketRepository, UserManager<ApplicationUser> userManager,IConfiguration configuration) : IServiceManager
+    public class ServiceManager(IUnitOfWork unitOfWork, IMapper mapper, IBasketRepository basketRepository, UserManager<ApplicationUser> userManager, IConfiguration configuration) : IServiceManager
     {
-        private readonly Lazy<IProductService> _LazyproductService = new Lazy<IProductService>(() => new ProductService(unitOfWork, mapper));
+        private readonly Lazy<IProductService> _LazyproductService = new Lazy<IProductService>(() => new ProductService(unitOfWork, mapper)); 
+
         private readonly Lazy<IBasketService> _LazybasketService = new Lazy<IBasketService>(() => new BasketService(basketRepository, mapper));
+
         public readonly Lazy<IAuthenticationService> _LazyAuthenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager ,configuration , mapper));
+
+        public readonly Lazy<IOrderServices> _LazyOrderServices = new Lazy<IOrderServices>(()=>new OrderService(mapper ,basketRepository ,unitOfWork));
+
+
 
         public IProductService ProductService => _LazyproductService.Value;
         public IBasketService BasketService => _LazybasketService.Value;
         public IAuthenticationService AuthenticationService => _LazyAuthenticationService.Value;
-
+        public IOrderServices OrderServices => _LazyOrderServices.Value;
     }
 }
