@@ -40,7 +40,7 @@ namespace Presentation.Controllers
 
         //Get Order By Id
         [Authorize]
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id:guid}")] 
         public async Task<ActionResult<OrderToReturnDTo>> GetOrderById(Guid id)
         {
             var Order = await _serviceManager.OrderServices.GetOrderByIdAsync(id);
