@@ -22,7 +22,8 @@ namespace Service.MappingProfiles
             CreateMap<OrderItem, OrderItemDTo>()
                 .ForMember(dist => dist.ProductName, Option => Option.MapFrom(Src => Src.Product.ProductName))
                 .ForMember(dist => dist.PictureUrl, Option => Option.MapFrom<OrderItemPictureUrlResolver>());
-                
+
+            CreateMap<DeliveryMethod, DeliveryMethodDTo>();
 
         }
     }

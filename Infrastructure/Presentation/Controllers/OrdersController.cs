@@ -17,7 +17,7 @@ namespace Presentation.Controllers
         [HttpPost]
         public async Task<ActionResult<OrderToReturnDTo>> CreateOrder(OrderDTo orderDTo)
         {
-            var Order = await _serviceManager.OrderServices.CreateOrder(orderDTo , GetEmailFromToken());
+            var Order = await _serviceManager.OrderServices.CreateOrderAsync(orderDTo , GetEmailFromToken());
             return Ok(Order);
         }
     }
