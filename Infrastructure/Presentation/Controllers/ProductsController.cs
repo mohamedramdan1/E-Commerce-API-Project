@@ -14,7 +14,6 @@ namespace Presentation.Controllers
 
     public class ProductsController(IServiceManager _serviceManager) : ApiBaseController
     {
-        [Authorize(Roles ="Admin")]
         //Get All products
         //GET baseUrl/api/Products
         //ProductQueryParams that class have ll paermter we send to End point GetAllProducts here it is complex object so we must use [fromQuery] becouse [HTTPGET] desnot have body
