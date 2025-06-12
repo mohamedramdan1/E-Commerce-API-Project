@@ -10,5 +10,10 @@ namespace Shared.DataTransferObjects.BsketModuleDTos
     {
         public string Id { get; set; }
         public ICollection<BasketItemDTo> items { get; set; } = [];
+        public string? clientSecret { get; set; }
+        public string? paymentIntentId { get; set; }
+        public int? deliveryMethodId { get; set; }
+        public decimal? shippingPrice { get; set; }
+
     }
 }

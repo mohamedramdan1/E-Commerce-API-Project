@@ -30,7 +30,7 @@ namespace Presentation.Controllers
         }
 
         // Check Email
-        [HttpGet("CheckEmail")]
+        [HttpGet("emailexists")]
         public async Task<ActionResult<bool>> CheckEmail(string email)
         {
             var Result = await _serviceManager.AuthenticationService.CheckEmailAsync(email);
