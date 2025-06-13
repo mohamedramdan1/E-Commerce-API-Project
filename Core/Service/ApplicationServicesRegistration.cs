@@ -34,6 +34,10 @@ namespace Service
             Services.AddScoped<Func<IOrderServices>>(Provider =>
             () => Provider.GetRequiredService<IOrderServices>());
 
+            Services.AddScoped<IPaymentService,PaymentService>();
+            Services.AddScoped<Func<IPaymentService>>(Provider =>
+            () => Provider.GetRequiredService<IPaymentService>());
+
             Services.AddScoped<ICacheServices, CacheService>();
             return Services;
         }
