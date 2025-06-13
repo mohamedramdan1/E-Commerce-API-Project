@@ -33,7 +33,7 @@ namespace Service
             var ProductCount = Products.Count();
             var CountSpecifications = new ProductCountSpecification(queryParams);
             var TotalCount = await Repo.CountAsync(CountSpecifications);
-            return new PaginationResult<ProductDTo>(queryParams.PageIndex , ProductCount , TotalCount , Data);
+            return new PaginationResult<ProductDTo>(queryParams.pageNumber , ProductCount , TotalCount , Data);
         }
 
         public async Task<IEnumerable<TypeDTO>> GetAllTypeAsync()

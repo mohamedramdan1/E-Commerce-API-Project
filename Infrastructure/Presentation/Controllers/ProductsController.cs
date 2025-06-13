@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Attributes;
 using ServiceAbstraction;
 using Shared;
 using Shared.DataTransferObjects.ProductModuleDTos;
@@ -14,11 +15,11 @@ namespace Presentation.Controllers
 
     public class ProductsController(IServiceManager _serviceManager) : ApiBaseController
     {
-        [Authorize(Roles ="Admin")]
         //Get All products
         //GET baseUrl/api/Products
         //ProductQueryParams that class have ll paermter we send to End point GetAllProducts here it is complex object so we must use [fromQuery] becouse [HTTPGET] desnot have body
-        [HttpGet]  
+        [HttpGet]
+        [Cache]//CacheAttribute
         public async Task<ActionResult<PaginationResult<ProductDTo>>> GetAllProducts([FromQuery]ProductQueryParams queryParams)
         {
             var Products = await _serviceManager.ProductService.GetAllProductAsync(queryParams);
@@ -39,6 +40,7 @@ namespace Presentation.Controllers
         //Get All Types
         //GET baseUrl/api/Products/types
         [HttpGet("types")]
+        [Cache]
         public async Task<ActionResult<IEnumerable<TypeDTO>>> GetTypes()
         {
             var Types =await _serviceManager.ProductService.GetAllTypeAsync();
@@ -49,6 +51,7 @@ namespace Presentation.Controllers
         //Get All Brands
         //GET baseUrl/api/Products/brand
         [HttpGet("brands")]
+        [Cache]
         public async Task<ActionResult<IEnumerable<BrandDTo>>> GetBrands()
         {
             var Brands = await _serviceManager.ProductService.GetAllBrandAsync();

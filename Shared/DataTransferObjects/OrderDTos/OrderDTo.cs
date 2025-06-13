@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +11,6 @@ namespace Shared.DataTransferObjects.OrderDTos
     {
         public string BasketId { get; set; } = default!;
         public int DeliveryMethodId { get; set; }
-        public AddressDTo Address { get; set; } = default!;
+        public AddressDTo shipToAddress { get; set; } = default!;
     }
 }

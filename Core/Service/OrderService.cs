@@ -8,6 +8,7 @@ using DomainLayer.Contracts;
 using DomainLayer.Exceptions;
 using DomainLayer.Models.OrderModule;
 using DomainLayer.Models.ProducModule;
+using Service.Specifications;
 using Service.Specifications.OrderModuleSpecifications;
 using ServiceAbstraction;
 using Shared.DataTransferObjects.IdentityDtos;
@@ -20,13 +21,19 @@ namespace Service
         public async Task<OrderToReturnDTo> CreateOrderAsync(OrderDTo orderDTo, string Email)
         {
             //Map Address To OrderAddress
-            var OrderAddress = _mapper.Map<AddressDTo, OrderAddress>(orderDTo.Address);
+            var OrderAddress = _mapper.Map<AddressDTo, OrderAddress>(orderDTo.shipToAddress);
 
 
             //Get Basket
             var Basket = await _basketRepository.GetBasketAsync(orderDTo.BasketId)
                 ?? throw new BasketNotFoundException(orderDTo.BasketId);
 
+            ArgumentNullException.ThrowIfNullOrEmpty(Basket.paymentIntentId);
+
+            var OrderRepo = _unitOfWork.GetRepository<Order, Guid>();
+            var OrderSpec = new OrderWithPaymentintentSpecification(Basket.paymentIntentId);
+            var ExixistingOrder = await OrderRepo.GetByIdAsync(OrderSpec);
+            if (ExixistingOrder is not null) OrderRepo.Remove(ExixistingOrder);
 
             //Create OrderItems
             List<OrderItem> OrderItems = [];
@@ -57,7 +64,7 @@ namespace Service
 
 
             //Make Order
-            var Order = new Order(Email, OrderAddress, DeliveryMethod, OrderItems, SubTotal);
+            var Order = new Order(Email, OrderAddress, DeliveryMethod, OrderItems, SubTotal, Basket.paymentIntentId);
 
 
             //Add Order 

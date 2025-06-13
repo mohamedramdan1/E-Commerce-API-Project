@@ -1,4 +1,5 @@
 
+using System.Text.Json;
 using DomainLayer.Contracts;
 using E_Commerce.Web.CustomMiddleWares;
 using E_Commerce.Web.Extensions;
@@ -12,6 +13,7 @@ using Persistence.Repositories;
 using Service;
 using ServiceAbstraction;
 using Shared.ErrorModels;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace E_Commerce.Web
 {
@@ -22,7 +24,16 @@ namespace E_Commerce.Web
             var builder = WebApplication.CreateBuilder(args);
 
             #region Add services to the container
-            builder.Services.AddControllers();            
+            builder.Services.AddControllers(); 
+            builder.Services.AddCors(Option=>
+            {
+                Option.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
+                });
+            });
             builder.Services.AddSwaggerServices();
             builder.Services.AddInfrastuctureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
@@ -43,20 +54,41 @@ namespace E_Commerce.Web
 
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwaggerModdelWare();
+                app.UseSwagger();
+                app.UseSwaggerUI(Options =>
+                {
+                    Options.ConfigObject = new ConfigObject()
+                    {
+                        DisplayRequestDuration = true // Time Of Request 
+                    };
+
+                    Options.DocumentTitle = "My E-Commerce API";// Tittle in swagger
+
+                    Options.JsonSerializerOptions = new JsonSerializerOptions()
+                    {
+                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase// allow CameCase In Jason 
+                    };
+
+                    Options.DocExpansion(DocExpansion.None);
+
+                    Options.EnableFilter();// Search in Swagger
+
+                    Options.EnablePersistAuthorization();// For Authorization
+                });
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors("AllowAll");
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
             #endregion
             
-            app.Run(); 
+            app.Run();  
         }
     }
-}
+}  
  

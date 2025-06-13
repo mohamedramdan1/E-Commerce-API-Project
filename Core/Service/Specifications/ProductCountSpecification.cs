@@ -13,7 +13,7 @@ namespace Service.Specifications
         public ProductCountSpecification(ProductQueryParams queryParams)
             : base(P => (!queryParams.BrandId.HasValue || P.BrandId == queryParams.BrandId)
             && (!queryParams.TypeId.HasValue || P.TypeId == queryParams.TypeId)
-            && (string.IsNullOrEmpty(queryParams.SearchValue) || P.Name.ToLower().Contains(queryParams.SearchValue.ToLower())))
+            && (string.IsNullOrEmpty(queryParams.search) || P.Name.ToLower().Contains(queryParams.search.ToLower())))
         {
             
         }
