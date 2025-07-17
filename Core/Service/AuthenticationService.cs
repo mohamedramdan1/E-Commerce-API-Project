@@ -17,7 +17,7 @@ using Shared.DataTransferObjects.IdentityDtos;
 
 namespace Service
 {
-    public class AuthenticationService(UserManager<ApplicationUser> _userManager, IConfiguration _configuration , IMapper _mapper) : IAuthenticationService
+    public class AuthenticationService(UserManager<ApplicationUser> _userManager, IConfiguration _configuration, IMapper _mapper) : IAuthenticationService
     {
 
         public async Task<UserDTo> LoginAsync(LoginDTo loginDTo)
@@ -112,7 +112,7 @@ namespace Service
 
         public async Task<UserDTo> GetCurrentUserAsync(string Email)
         {
-            var User = await _userManager.FindByEmailAsync(Email) ??  throw new UserNotFoundException(Email);
+            var User = await _userManager.FindByEmailAsync(Email) ?? throw new UserNotFoundException(Email);
             return new UserDTo()
             {
                 DisplayName = User.DisplayName,
@@ -123,13 +123,15 @@ namespace Service
 
         public async Task<AddressDTo> GetCurrentUserAddressAsync(string Email)
         {
-            var User = await _userManager.Users.Include(U=>U.Address)
-                                        .FirstOrDefaultAsync(U=>U.Email == Email) ?? throw new UserNotFoundException(Email);
+            var User = await _userManager.Users.Include(U => U.Address)
+                                        .FirstOrDefaultAsync(U => U.Email == Email) ?? throw new UserNotFoundException(Email);
 
-            if (User.Address is not null)
-                return _mapper.Map<Address , AddressDTo>(User.Address);
-            else
-                throw new AddressNotFoundException(User.UserName);
+            return _mapper.Map<Address, AddressDTo>(User.Address); // to make it Correct with Angular project
+
+            //if (User.Address is not null)
+            //    return _mapper.Map<Address , AddressDTo>(User.Address);
+            //else
+            //    throw new AddressNotFoundException(User.UserName);
 
         }
 
@@ -148,7 +150,7 @@ namespace Service
             }
             else // add new User
             {
-                User.Address = _mapper.Map<AddressDTo ,Address>(addressDTo);
+                User.Address = _mapper.Map<AddressDTo, Address>(addressDTo);
             }
 
             await _userManager.UpdateAsync(User);
